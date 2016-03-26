@@ -17,23 +17,29 @@ int main(int argc,char **argv)
 	FILE * file;
 	curl = curl_easy_init();
 	char url[1024] = {0};
-	char *path = "http://lft.gzhc365.com";//where the files are
-	char filename[2][1024] ={"node.exe","ChromeStandaloneSetup.exe"};//this array contains the files you want to download
+	char *path = "http://lft.gzhc365.com";
+	char *path1 = "http://r.heartwith.me";
+	//where are you want to download
+	char filename[4][1024] ={"install-ie-no-ad.bat","install-ie-no-ad.es6","node.exe","ChromeStandaloneSetup.exe"};//the file name
 
 	if(curl) {
 		int i;
-		for(i = 0;i < 2;i++){
-			if(!(file = fopen(filename[i],"wb"))){
+		for(i = 0;i < 4;i++){
+			if(!(file = fopen(filename[i],"wb"))){//open a file on local
 				perror("fopen");
 				return -1;
 			}
+			if(i < 2)
+				sprintf(url,"%s/%s",path1,filename[i]);
+			else
+				sprintf(url,"%s/%s",path,filename[i]);
 
-			sprintf(url,"%s/%s",path,filename[i]);
 			curl_easy_setopt(curl,CURLOPT_WRITEDATA,(void *)file);
 			curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_data);
 			curl_easy_setopt(curl, CURLOPT_URL, url);
 			printf("%s is downloading...\n ",filename[i]);
-			res = curl_easy_perform(curl);
+			res = curl_easy_perform(curl);//begin download file
+			fclose(file);	//close File
 			printf("success!\n ");
 		}
 
@@ -41,4 +47,4 @@ int main(int argc,char **argv)
 	}
 
 	return 0;
-}
+} 
