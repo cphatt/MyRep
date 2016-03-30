@@ -62,7 +62,7 @@ int main(int argc,char **argv)
 		
 	if(!getFile(url)){//get download.list
 		remove(filename);
-		printf("please Enter\n");
+		printf("Enter key to exit \n");
 		char c = fgetc(stdin);
 		return 0;
 	}
